@@ -4,7 +4,12 @@ from util import save_pickle, load_pickle, load_files, get_file_name_via_index
 import time
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
+def home():
+    return 'Fuzzy DNA Search API'
+
+
+@app.route('/search', methods=['GET', 'POST'])
 def index():
     fmi = FMIndex()
     if request.method == 'GET':

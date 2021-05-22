@@ -13,61 +13,44 @@ def home():
 def index():
     fmi = FMIndex()
     if request.method == 'GET':
-        # message = 'hi'
-        pat = request.args.get('keyword')
-        # request.form['keyword'])
-        # return render_template('index.html', message=message)
-
-        if pat:
-            # pat = request.form['keyword']
-            # pat = '日本の'
-            match = fmi.search(pat)
-            print('Results of search("{}")'.format(pat))
-            print('match', match)
-            rng = 15
-            results = []
-            for i, m in enumerate(match):
-                beg = m[0]
-                end = m[1]
-                # print('(beg, end) = ({}, {})'.format(beg, end))
-                f_name = get_file_name_via_index(db, beg)
-                print('{} [{}]: ({}, {})'.format(i, f_name, beg, end))
-                # print('---{}"{}"{}---'.format(dec[beg-rng: beg], dec[beg:end], dec[end:end+rng]))
-                print('---{}"{}"{}---'.format(T[beg-rng: beg], T[beg:end], T[end:end+rng]))
-                v = '{}<span class="match">{}</span>{}'.format(T[beg-rng: beg], T[beg:end], T[end:end+rng])
-                results.append((f_name, v))
-                # print(decoded[m[0]:])
-            return render_template('index.html', results=results)
-        else:
-            return render_template('index.html')
+        return 'send post request'
     else:
         print('request received\n')
 
         substring = request.files['substring'].read().decode()
         T = request.files['file'].read().decode()
+        filename = request.files['file'].filename
+        
+        print(filename)
+
         fmi = FMIndex()
-        
-        save_idx = 'data/idx_test'
-        datafile = 'test_data'
 
-        print('encode text...')
+        if '.dict' in filename:
+            saved_data = load_pickle(filename)
+            bw = saved_data['bwt']
+            fmi.set_dict(saved_data)        
+        
+        else:
+            print('encode text...')
 
-        start = time.time()
-        bw, sa = fmi.encode(T)
-        stop = time.time()
-        
-        print('suffix array time:', stop-start)
-        
-        start = time.time()
-        ranks, ch_count = fmi.rank_bwt(bw)
-        stop = time.time()
-        
-        print('ranking time:', stop-start)
-        
-        save_pickle({'bwt': bw, 'sa': sa, 'text_len': len(T), 'ch_count': ch_count}, 'index.dict')
-        fmi.ch_count = ch_count
-        
-        print('encode done!')
+            start = time.time()
+            bw, sa = fmi.encode(T)
+            # print(sa)
+            stop = time.time()
+            
+            print('suffix array time:', stop-start)
+            
+            start = time.time()
+            ranks, ch_count = fmi.rank_bwt(bw)
+            print(ch_count)
+            stop = time.time()
+            
+            print('ranking time:', stop-start)
+            
+            save_pickle({'bwt': bw, 'sa': sa, 'text_len': len(T), 'ch_count': ch_count}, 'index.dict')
+            fmi.ch_count = ch_count
+            
+            print('encode done!')
 
         start = time.time()
 

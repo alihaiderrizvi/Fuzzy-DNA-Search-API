@@ -5,7 +5,7 @@ import pickle
 def save_pickle(d, path):
     print('save pickle to', path)
     with open(path, mode='wb') as f:
-        pickle.dump(d, f)
+        pickle.dump(d, f, protocol=3)
 
 
 def load_pickle(path):

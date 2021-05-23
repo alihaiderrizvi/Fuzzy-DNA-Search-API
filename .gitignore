@@ -105,4 +105,3 @@ books
 .vscode/
 
 server.py
-*.dict

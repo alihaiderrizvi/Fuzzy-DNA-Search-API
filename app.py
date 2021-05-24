@@ -7,13 +7,26 @@ app = Flask(__name__)
 
 def fuzzy_search(substring, fmi):
     results = {}
-        
-    #fuzzy search
-    for i in range(len(substring), int(len(substring)*0.79), -1):
-        s = substring[:i]
-        perc = int((len(s) / len(substring)) * 100)
-        match = fmi.search(s)
-        results[perc] = match
+    window = int(len(substring)*0.8)
+
+    while window < len(substring):
+        i = 0
+
+        while i+window <= len(substring):
+            s = substring[i:i+window]
+            perc = int((len(s) / len(substring)) * 100)
+            match = fmi.search(s)
+            
+            if perc in results:
+                results[perc].extend(match)
+            else:
+                results[perc] = match
+            
+            i += 1
+        window += 1
+    
+    for i in results:
+        results[i].sort()
     
     return results
 

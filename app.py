@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from fm_index import FMIndex
 from util import save_pickle, load_pickle, load_files, get_file_name_via_index
 import time
@@ -26,28 +26,6 @@ def fuzzy_search(substring, fmi):
             results[score] = sorted(res)
     
     return results
-    
-    # window = int(len(substring)*0.8)
-    # while window < len(substring):
-    #     i = 0
-
-    #     while i+window <= len(substring):
-    #         s = substring[i:i+window]
-    #         perc = int((len(s) / len(substring)) * 100)
-    #         match = fmi.search(s)
-            
-    #         if perc in results:
-    #             results[perc].extend(match)
-    #         else:
-    #             results[perc] = match
-            
-    #         i += 1
-    #     window += 1
-    
-    # for i in results:
-    #     results[i].sort()
-    
-    # return results
 
 
 @app.route('/', methods=['GET'])
@@ -70,8 +48,6 @@ def index():
 
         T = request.files['file'].read().decode()
         print('file read')
-        # filename = request.files['file'].filename
-        
 
         fmi = FMIndex()
         
@@ -105,7 +81,7 @@ def index():
         results['search time'] = stop-start
         print('searching time:', stop-start)
         print('results:', results)
-        return results
+        return jsonify(results)
 
 
 @app.route('/preloaded', methods=['GET', 'POST'])

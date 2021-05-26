@@ -72,39 +72,30 @@ def index():
         print('file read', T)
         # filename = request.files['file'].filename
         
-        # print(filename)
-        return 'ok'
 
         fmi = FMIndex()
         
-        #check if DNA index is received
-        if '.dict' in filename:
-            saved_data = load_pickle(filename)
-            bw = saved_data['bwt']
-            fmi.set_dict(saved_data)
-        
-        else:
-            print('encode text...')
+        print('encode text...')
 
-            #build burrow's wheeler and suffix array
-            start = time.time()
-            bw, sa = fmi.encode(T)
-            stop = time.time()
-            
-            print('suffix array time:', stop-start)
-            
-            # find character count and ranks
-            start = time.time()
-            ranks, ch_count = fmi.rank_bwt(bw)
-            stop = time.time()
-            
-            print('ranking time:', stop-start)
-            
-            #save index
-            save_pickle({'bwt': bw, 'sa': sa, 'text_len': len(T), 'ch_count': ch_count}, 'index.dict')
-            fmi.ch_count = ch_count
-            
-            print('encode done!')
+        #build burrow's wheeler and suffix array
+        start = time.time()
+        bw, sa = fmi.encode(T)
+        stop = time.time()
+        
+        print('suffix array time:', stop-start)
+        
+        # find character count and ranks
+        start = time.time()
+        ranks, ch_count = fmi.rank_bwt(bw)
+        stop = time.time()
+        
+        print('ranking time:', stop-start)
+        
+        #save index
+        save_pickle({'bwt': bw, 'sa': sa, 'text_len': len(T), 'ch_count': ch_count}, 'index.dict')
+        fmi.ch_count = ch_count
+        
+        print('encode done!')
 
         start = time.time()
 

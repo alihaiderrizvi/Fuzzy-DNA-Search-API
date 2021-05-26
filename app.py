@@ -2,8 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from fm_index import FMIndex
 from util import save_pickle, load_pickle, load_files, get_file_name_via_index
 import time
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def fuzzy_search(substring, fmi):
     results = {}
@@ -100,15 +103,8 @@ def index():
 
         results = fuzzy_search(substring, fmi)
         
-        # #fuzzy search
-        # for i in range(len(substring), int(len(substring)*0.79), -1):
-        #     s = substring[:i]
-        #     perc = int((len(s) / len(substring)) * 100)
-        #     match = fmi.search(s)
-        #     results[perc] = match
-        
         stop = time.time()
-
+        results['search time'] = stop-start
         print('searching time:', stop-start)
         return results
 
@@ -135,8 +131,11 @@ def preloaded():
         fmi.set_dict(file)
         
         print('loaded index')
+        start = time.time()
         results = fuzzy_search(substring, fmi)
-
+        stop = time.time()
+        results['search time'] = stop-start
+        print('searching time:', stop-start)
         return results
 
 if __name__ == '__main__':

@@ -60,16 +60,18 @@ def index():
         return 'send post request'
     else:
         print('request received')
-        print(request.files['file'])
+        print(request.form.get('file'))
 
         # read substring and dna file from request
-        substring = request.files['substring'].read().decode()
-        print('substring read')
-        T = request.files['file'].read().decode()
-        print('file read')
-        filename = request.files['file'].filename
+        substring = request.form.get('substring')
+
+        print('substring read', substring)
+        T = request.form.get('file')
+        print('file read', T)
+        # filename = request.files['file'].filename
         
-        print(filename)
+        # print(filename)
+        return 'ok'
 
         fmi = FMIndex()
         

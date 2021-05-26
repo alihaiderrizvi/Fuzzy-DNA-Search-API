@@ -21,7 +21,7 @@ def fuzzy_search(substring, fmi):
             match[j] = match[j][0]
             if match[j] not in unique:
                 unique.add(match[j])
-                res.append(match[j])
+                res.append([match[j], match[j]+full_len])
         if res:
             results[score] = sorted(res)
     

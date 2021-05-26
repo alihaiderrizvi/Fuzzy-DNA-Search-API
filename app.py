@@ -21,7 +21,7 @@ def fuzzy_search(substring, fmi):
             match[j] = match[j][0]
             if match[j] not in unique:
                 unique.add(match[j])
-                res.append([match[j], match[j]+full_len])
+                res.append(match[j])
         if res:
             results[score] = sorted(res)
     
@@ -115,7 +115,7 @@ def preloaded():
         results['search time'] = str(stop-start)
         print('searching time:', stop-start)
         print('results:', results)
-        return results
+        return jsonify(results)
 
 if __name__ == '__main__':
     app.debug = True

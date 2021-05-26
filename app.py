@@ -11,18 +11,19 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def fuzzy_search(substring, fmi):
     results = {}
     unique = set()
-    
+    full_len = len(substring)
     for i in range(len(substring), int(len(substring)*0.78), -1):
         s = substring[:i]
+        score = len(s)
         match = fmi.search(s)
         res = []
         for j in range(len(match)):
             match[j] = match[j][0]
             if match[j] not in unique:
                 unique.add(match[j])
-                res.append(match[j])
+                res.append([match[j], match[j]+full_len])
         if res:
-            results[s] = sorted(res)
+            results[score] = sorted(res)
     
     return results
     
@@ -61,11 +62,12 @@ def index():
     else:
         print('request received')
         print('form:', request.form)
+        print('files:', request.files)
 
         # read substring and dna file from request
         substring = request.form.get('substring')
-
         print('substring read', substring)
+
         T = request.files['file'].read().decode()
         print('file read')
         # filename = request.files['file'].filename

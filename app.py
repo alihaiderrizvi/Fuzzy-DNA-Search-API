@@ -69,7 +69,7 @@ def index():
 
         print('substring read', substring)
         T = request.files['file'].read().decode()
-        print('file read', T)
+        print('file read')
         # filename = request.files['file'].filename
         
 

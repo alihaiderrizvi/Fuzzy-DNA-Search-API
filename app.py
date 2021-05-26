@@ -59,7 +59,8 @@ def index():
     if request.method == 'GET':
         return 'send post request'
     else:
-        print('request received\n')
+        print('request received')
+        print(request.files['file'])
 
         # read substring and dna file from request
         substring = request.files['substring'].read().decode()

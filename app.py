@@ -86,7 +86,7 @@ def index():
 
 @app.route('/preloaded', methods=['GET', 'POST'])
 def preloaded():
-    files = ['Candidatus Carsonella ruddii.dict', 'coronavirus 2 isolate.dict', 'peach.dict']
+    files = ['Candidatus Carsonella ruddii.dict', 'coronavirus 2 isolate.dict']
     
     if request.method == 'GET':
         return 'send post request'
@@ -95,7 +95,7 @@ def preloaded():
         marker = int(request.files['marker'].read().decode())
         substring = request.files['substring'].read().decode()
     
-        if not (1 <= marker <= 3):
+        if not (1 <= marker <= 2):
             return 'marker should be an int within the range 1-4 inclusive'
         
         ind = marker - 1
@@ -109,8 +109,9 @@ def preloaded():
         start = time.time()
         results = fuzzy_search(substring, fmi)
         stop = time.time()
-        results['search time'] = stop-start
+        results['search time'] = str(stop-start)
         print('searching time:', stop-start)
+        print('results:', results)
         return results
 
 if __name__ == '__main__':

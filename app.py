@@ -63,6 +63,8 @@ def index():
         print('form:', request.form)
         print(request.form.get('file'))
 
+        print('file:', request.files)
+
         # read substring and dna file from request
         substring = request.form.get('substring')
 

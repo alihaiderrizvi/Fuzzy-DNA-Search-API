@@ -61,15 +61,14 @@ def index():
     else:
         print('request received')
         print('form:', request.form)
-        print(request.form.get('file'))
 
-        print('file:', request.files)
+        print('file:', request.files['file'].read().decode())
 
         # read substring and dna file from request
         substring = request.form.get('substring')
 
         print('substring read', substring)
-        T = request.form.get('file')
+        T = request.files['file'].read().decode()
         print('file read', T)
         # filename = request.files['file'].filename
         

@@ -1,16 +1,17 @@
 import requests
 from io import BytesIO
 import json
-import time
-import jsonify
 
 file = open('test_data.txt', 'r')
 
-url = 'http://127.0.0.1:5000/'
-file_payload = {'file': file,
-                'substring': 'ccttaactacggacgtttgt'}
-start = time.time()
+url = 'https://fm-index.herokuapp.com/preloaded'
+marker = 1 # should be between 1-2 inclusive
+substring = 'AAATAATTAATATT'
+payload = {
+            'marker': marker,
+            'substring': substring
+          }
+
 r = requests.post(url, files=file_payload)
-stop = time.time()
-print(r)
-print(stop-start)
+
+print(r.json())

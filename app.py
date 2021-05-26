@@ -63,7 +63,9 @@ def index():
 
         # read substring and dna file from request
         substring = request.files['substring'].read().decode()
+        print('substring read')
         T = request.files['file'].read().decode()
+        print('file read')
         filename = request.files['file'].filename
         
         print(filename)

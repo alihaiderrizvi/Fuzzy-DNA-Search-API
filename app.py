@@ -7,28 +7,43 @@ app = Flask(__name__)
 
 def fuzzy_search(substring, fmi):
     results = {}
-    window = int(len(substring)*0.8)
-
-    while window < len(substring):
-        i = 0
-
-        while i+window <= len(substring):
-            s = substring[i:i+window]
-            perc = int((len(s) / len(substring)) * 100)
-            match = fmi.search(s)
-            
-            if perc in results:
-                results[perc].extend(match)
-            else:
-                results[perc] = match
-            
-            i += 1
-        window += 1
+    unique = set()
     
-    for i in results:
-        results[i].sort()
+    for i in range(len(substring), int(len(substring)*0.78), -1):
+        s = substring[:i]
+        match = fmi.search(s)
+        res = []
+        for j in range(len(match)):
+            match[j] = match[j][0]
+            if match[j] not in unique:
+                unique.add(match[j])
+                res.append(match[j])
+        if res:
+            results[s] = sorted(res)
     
     return results
+    
+    # window = int(len(substring)*0.8)
+    # while window < len(substring):
+    #     i = 0
+
+    #     while i+window <= len(substring):
+    #         s = substring[i:i+window]
+    #         perc = int((len(s) / len(substring)) * 100)
+    #         match = fmi.search(s)
+            
+    #         if perc in results:
+    #             results[perc].extend(match)
+    #         else:
+    #             results[perc] = match
+            
+    #         i += 1
+    #     window += 1
+    
+    # for i in results:
+    #     results[i].sort()
+    
+    # return results
 
 
 @app.route('/', methods=['GET'])

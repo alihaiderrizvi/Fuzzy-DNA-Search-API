@@ -92,11 +92,14 @@ def preloaded():
         return 'send post request'
     
     else:
-        marker = int(request.files['marker'].read().decode())
-        substring = request.files['substring'].read().decode()
+        print('form:', request.form)
+        print('files:', request.files)
+
+        marker = int(request.form.get('marker'))
+        substring = str(request.form.get('substring'))
     
         if not (1 <= marker <= 2):
-            return 'marker should be an int within the range 1-4 inclusive'
+            return 'marker should be an int within the range 1-2 inclusive'
         
         ind = marker - 1
         file = load_pickle(files[ind])

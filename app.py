@@ -60,6 +60,7 @@ def index():
         return 'send post request'
     else:
         print('request received')
+        print('form:', request.form)
         print(request.form.get('file'))
 
         # read substring and dna file from request

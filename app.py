@@ -104,6 +104,7 @@ def index():
         stop = time.time()
         results['search time'] = stop-start
         print('searching time:', stop-start)
+        print('results:', results)
         return results
 
 

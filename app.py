@@ -112,10 +112,10 @@ def preloaded():
         start = time.time()
         results = fuzzy_search(substring, fmi)
         stop = time.time()
-        results['search time'] = str(stop-start)
+        results['search time'] = stop-start
         print('searching time:', stop-start)
         print('results:', results)
-        return jsonify(results)
+        return results
 
 if __name__ == '__main__':
     app.debug = True
